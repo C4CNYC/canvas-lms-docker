@@ -13,7 +13,7 @@ jobs:
       - name: 'Checkout'
         uses: actions/checkout@v2
 
-      - name: 'Checkout canvas-ltm from release'
+      - name: 'Checkout canvas-lms from release'
         uses: actions/checkout@v2
         with:
           repository: instructure/canvas-lms
@@ -21,7 +21,7 @@ jobs:
           path: canvas-lms
           fetch-depth: 1
 
-      - name: 'Build canvas-ltm from release'
+      - name: 'Build canvas-lms from release'
         run: |
           # Add configuration with container-friendly configuration
           rm -rf canvas-lms/config/*.yml.example
@@ -49,22 +49,22 @@ jobs:
       - name: 'Tag and Publish'
         if: github.ref == 'refs/heads/master'
         env:
-          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN_KTHAM }}
-          DOCKER_HUB_USER: ktham
+          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN_CODE_4_CHANGE }}
+          DOCKER_HUB_USER: code4change
         run: |
           # Replaces dashes with periods in Docker tag name
           IMAGE_VERSION=$(sed 's/-/./g' <<< ${{ matrix.canvas_lms_release }})
 
-          IMAGE="ktham/canvas-lms:$IMAGE_VERSION"
+          IMAGE="code4change/canvas-lms:$IMAGE_VERSION"
 
           # Docker login to Github Packages
           echo ${DOCKER_HUB_TOKEN} | docker login -u ${DOCKER_HUB_USER} --password-stdin
 
           # Tag and Publish
           docker tag code4c/canvas-lms:production $IMAGE
-          docker tag code4c/canvas-lms:production ktham/canvas-lms:latest
+          docker tag code4c/canvas-lms:production code4change/canvas-lms:latest
           docker push $IMAGE
-          docker push ktham/canvas-lms:latest
+          docker push code4change/canvas-lms:latest
 
           # Remove docker config file just in case, for security reasons
           sudo rm -rf /home/runner/.docker/config.json
