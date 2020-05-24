@@ -1,7 +1,7 @@
 version: "3.3"
 services:
   web:
-    image: gracepoint/canvas-lms:production
+    image: code4c/canvas-lms:production
     depends_on:
       - postgres
       - redis
@@ -25,7 +25,7 @@ services:
       - "80:80"
 
   db_setup:
-    image: gracepoint/canvas-lms:production
+    image: code4c/canvas-lms:production
     depends_on:
       - postgres
       - redis
