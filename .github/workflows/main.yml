@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        canvas_lms_release: ["2020-04-25.05"]
+        canvas_lms_release: ["2020-06-06.08"]
 
     steps:
       - name: 'Checkout'
@@ -26,6 +26,9 @@ jobs:
           # Add configuration with container-friendly configuration
           rm -rf canvas-lms/config/*.yml.example
           cp -r config/. canvas-lms/config/
+
+          # Patch
+          sed -i 's/include Concerns/include Lti::Ims::Concerns/g' canvas-lms/app/controllers/lti/ims/deep_linking_controller.rb
 
           # Build image
           docker build -f canvas-lms/Dockerfile -t code4c/canvas-lms:production canvas-lms
