@@ -1,0 +1,9 @@
+production:
+  # tree
+  config:
+    # service
+    canvas:
+      # environment
+      canvas:
+        encryption-secret: <%= ENV["CANVAS_ENCRYPTION_SECRET"] %>
+        signing-secret: <%= ENV["CANVAS_ENCRYPTION_SECRET"] %>
